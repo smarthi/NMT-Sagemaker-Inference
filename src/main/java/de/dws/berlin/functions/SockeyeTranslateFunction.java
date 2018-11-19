@@ -1,6 +1,5 @@
 package de.dws.berlin.functions;
 
-import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,8 +13,6 @@ import com.amazonaws.services.sagemakerruntime.AmazonSageMakerRuntime;
 import com.amazonaws.services.sagemakerruntime.model.InvokeEndpointRequest;
 import com.google.gson.Gson;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 import de.dws.berlin.util.AwsUtil;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.configuration.Configuration;
@@ -24,6 +21,11 @@ import org.apache.flink.streaming.api.functions.windowing.RichAllWindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.GlobalWindow;
 import org.apache.flink.util.Collector;
 
+/**
+ * @author Suneel Marthi
+ * Rich Window Function to invoke Sagemaker REST endpoint - seen much better performance just making a Thrift/gRPC call
+ *
+ */
 public class SockeyeTranslateFunction extends RichAllWindowFunction<Tuple2<String, String[]>, Tuple2<String,String>, GlobalWindow> {
 
   private AmazonSageMakerRuntime amazonSageMakerRuntime;
@@ -42,7 +44,7 @@ public class SockeyeTranslateFunction extends RichAllWindowFunction<Tuple2<Strin
 
   @Override
   public void apply(GlobalWindow window, Iterable<Tuple2<String, String[]>> iterable,
-                    Collector<Tuple2<String, String>> collector) throws Exception {
+                    Collector<Tuple2<String, String>> collector) {
 
     List<String> sentencesList = new ArrayList<>();
 
