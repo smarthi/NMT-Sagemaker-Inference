@@ -9,8 +9,8 @@ Given the > 6 mins time to create a Sagemaker endpoint - its best to use
 Sagemaker only for model inference. For streaming model training - consider using Oryx2, PredictionIO
 or Flink's Queryable State.
 
-Better options for Streaming Model Training would be to leverage Pravega (http://pravega.io)
-for realtime model updates or Flink's Stateful stream processing.
+Better options for Streaming Model Training would be to leverage Pravega (http://pravega.io) 
+or Flink's Stateful stream processing for realtime model updates.
 
 ## Building the Project
 
