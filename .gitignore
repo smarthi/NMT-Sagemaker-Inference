@@ -22,3 +22,4 @@ out/
 .nb-gradle-properties
 twitter.properties
 resources/opennlp-models/*
+dependency-reduced-pom.xml
