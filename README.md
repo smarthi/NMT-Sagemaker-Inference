@@ -14,7 +14,7 @@ or Flink's Queryable State.
 1. Fill twitter.properties with Twitter Developer OAuth Creds
 2. Deploy the model into Sagemaker as a Docker container - 
     get that here  --> https://amazon.awsapps.com/workdocs/index.html#/folder/e811a3ed006b7bb0b88d46b6010d1d232c21f8f69030dfa56133ee7918bb18fa
-
+   See the Readme file there for instructions on Sagemaker deployment
 3. Specify the AWS Sagemaker endpoint and region in aws.properties 
     make sure you have your AWS creds locally
 4. Run mvn package to generate a project jar
