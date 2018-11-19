@@ -20,6 +20,6 @@ out/
 *.log
 .nb-gradle
 .nb-gradle-properties
-twitter.properties
-resources/opennlp-models/*
+src/main/resources/*.properties
+src/main/resources/opennlp-models/*
 dependency-reduced-pom.xml
