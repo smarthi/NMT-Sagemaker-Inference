@@ -5,12 +5,14 @@ uses Byte-Pair Encoding (BPE) to account for unseen vocabulary.
 The model has been dockered into Sagemaker as a Flask app - honestly the performance is 
 infinitely better if just deployed as an RPC server (gRPC), but... why not try something new.
 
-Given the > 6 mins time to create a Sagemaker endpoint - its best to use 
-Sagemaker only for model inference. For streaming model training - consider using Oryx2, PredictionIO
+Given the > 6 mins time to create a Sagemaker endpoint, the fact that all Sagemaker model
+ training is batch only, and also that Python is the primary language of Sagemaker - its best to use 
+Sagemaker for model inference only when invoked from modern streaming pipelines like Kafka Streams and Flink.
+For streaming model training - consider looking at --> Oryx2, PredictionIO
 or Flink's Queryable State.
 
-Better options for Streaming Model Training would be to leverage Pravega (http://pravega.io) 
-or Flink's Stateful stream processing for realtime model updates.
+Even better and more recent options for Streaming Model Training would be to leverage something like 
+Pravega (http://pravega.io) or Flink's Stateful stream processing for realtime model updates.
 
 ## Building the Project
 
