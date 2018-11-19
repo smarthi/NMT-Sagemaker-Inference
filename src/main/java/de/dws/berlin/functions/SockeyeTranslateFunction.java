@@ -26,7 +26,6 @@ import org.apache.flink.util.Collector;
 
 public class SockeyeTranslateFunction extends RichAllWindowFunction<Tuple2<String, String[]>, Tuple2<String,String>, GlobalWindow> {
 
-  // for the record - the only Sagemaker Java api that indeed fucking works and has seen some usage per Stackoverflow
   private AmazonSageMakerRuntime amazonSageMakerRuntime;
   private InvokeEndpointRequest invokeEndpointRequest;
 
@@ -56,7 +55,8 @@ public class SockeyeTranslateFunction extends RichAllWindowFunction<Tuple2<Strin
     Gson gson = new Gson();
 
     for (String sentence : sentencesList) {
-      // Gotta do this - because the Python side of Sagemaker is 'flasked' and using flask-json which is essentially a Python dict()
+      // Gotta do this - because the Python side of Sagemaker is 'flasked' and uses flask-json which is essentially a Python dict()
+      // Yet another reason to just use gRPC
       Map<String, String> jsonMap = new HashMap<>();
       jsonMap.put("data", sentence.trim());
       String json = gson.toJson(jsonMap);

@@ -92,6 +92,7 @@ public class StreamingNmt {
         StreamExecutionEnvironment.getExecutionEnvironment();
 
     env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
+    env.setParallelism(3);
 
     // twitter credentials and source
     Properties props = new Properties();
@@ -111,10 +112,10 @@ public class StreamingNmt {
     DataStream<Tuple2<String, String>> sentenceStream =
         twitterStream.map(new SentenceDetectorFunction(deSentenceModel))
         .keyBy(0)
-        .countWindowAll(2)
+        .countWindowAll(3)
         .apply(new SockeyeTranslateFunction());
 
-    sentenceStream.writeAsCsv(outputPath, FileSystem.WriteMode.OVERWRITE, CsvOutputFormat.DEFAULT_LINE_DELIMITER, "\n");
+    sentenceStream.writeAsCsv(outputPath, FileSystem.WriteMode.OVERWRITE, CsvOutputFormat.DEFAULT_LINE_DELIMITER, "\n").setParallelism(1);
 
     // execute program
     env.execute("Executing Streaming Machine Translation");
