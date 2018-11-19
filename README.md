@@ -7,7 +7,7 @@ infinitely better if just deployed as an RPC server (gRPC), but... why not try s
 
 Given the > 6 mins time to create a Sagemaker endpoint, the fact that all Sagemaker model
  training is batch only, and also that Python is the primary language of Sagemaker - its best to use 
-Sagemaker for model inference only when invoked from modern streaming pipelines like Kafka Streams and Flink.
+Sagemaker for model inference when invoked from modern streaming pipelines like Kafka Streams and Flink.
 For streaming model training - consider looking at --> Oryx2, PredictionIO
 or Flink's Queryable State.
 
