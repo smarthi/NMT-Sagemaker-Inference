@@ -51,7 +51,7 @@ public class SockeyeTranslateFunction extends RichAllWindowFunction<Tuple2<Strin
       sentencesList.addAll(Arrays.asList(sentences.f1));
     }
 
-    // Sort the input to avoid creating "Jagged Tensors" if using GPUs
+    // Sort the input to avoid creating "Jagged Tensors" on GPUs/CPUs for inference
     Collections.sort(sentencesList);
     Gson gson = new Gson();
 
@@ -66,8 +66,13 @@ public class SockeyeTranslateFunction extends RichAllWindowFunction<Tuple2<Strin
       invokeEndpointRequest.setBody(byteBuffer);
       String translatedJson = new String((amazonSageMakerRuntime.invokeEndpoint(invokeEndpointRequest).getBody()).array());
 
-      System.out.println(sentence + "\n" + translatedJson.substring(translatedJson.indexOf(':') +2, translatedJson.lastIndexOf('"')) + "\n");
-      collector.collect(new Tuple2<>(sentence, translatedJson.substring(translatedJson.indexOf(':') +2, translatedJson.lastIndexOf('"'))));
+      if (translatedJson.length() > 0) {
+        System.out.println(sentence + "\n" + translatedJson + "\n");
+        collector.collect(new Tuple2<>(sentence, translatedJson.substring(translatedJson.indexOf(':') + 2)));
+      } else {
+        collector.collect(new Tuple2<>(sentence, translatedJson));
+      }
+
     }
   }
 }

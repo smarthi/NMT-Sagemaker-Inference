@@ -33,8 +33,10 @@ import de.dws.berlin.functions.SentenceDetectorFunction;
 import de.dws.berlin.functions.SockeyeTranslateFunction;
 import de.dws.berlin.twitter.TweetJsonConverter;
 import org.apache.flink.api.common.functions.FilterFunction;
+import org.apache.flink.api.java.io.CsvOutputFormat;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -62,7 +64,7 @@ public class StreamingNmt {
   private static final Logger LOG = LoggerFactory.getLogger(StreamingNmt.class);
 
   private static SentenceModel engSentenceModel, deSentenceModel;
-  private static TokenizerModel engTokenizerModel, deTokenizerModel;
+  private static TokenizerModel deTokenizerModel;
 
   private static void initializeModels() throws IOException {
     engSentenceModel = new SentenceModel(StreamingNmt.class.getResource("/opennlp-models/en-sent.bin"));
@@ -73,8 +75,18 @@ public class StreamingNmt {
   public static void main(String[] args) throws Exception {
 
     initializeModels();
+    String outputPath = null;
 
     ParameterTool parameterTool = ParameterTool.fromArgs(args);
+
+    // get output path
+    if (parameterTool.has("output")) {
+      // read the text file from given input path
+      outputPath = parameterTool.get("output");
+    } else {
+      System.out.println("Please provide an output path");
+      outputPath = "/Users/marthism/NmtOutput";
+    }
 
     final StreamExecutionEnvironment env =
         StreamExecutionEnvironment.getExecutionEnvironment();
@@ -99,10 +111,10 @@ public class StreamingNmt {
     DataStream<Tuple2<String, String>> sentenceStream =
         twitterStream.map(new SentenceDetectorFunction(deSentenceModel))
         .keyBy(0)
-        .countWindowAll(20)
+        .countWindowAll(2)
         .apply(new SockeyeTranslateFunction());
 
-//    sentenceStream.print();
+    sentenceStream.writeAsCsv(outputPath, FileSystem.WriteMode.OVERWRITE, CsvOutputFormat.DEFAULT_LINE_DELIMITER, "\n");
 
     // execute program
     env.execute("Executing Streaming Machine Translation");

@@ -30,7 +30,7 @@ under the License.
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<flink.version>1.6.0</flink.version>
+		<flink.version>1.6.2</flink.version>
 		<opennlp.version>1.8.4</opennlp.version>
 		<java.version>1.8</java.version>
 		<scala.version>2.11</scala.version>
@@ -78,18 +78,6 @@ under the License.
 			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-shaded-hadoop2</artifactId>
 			<version>${flink.version}</version>
-		</dependency>
-		<!-- special version for es6 support: https://github.com/thygesen/flink/tree/ES6 -->
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-connector-elasticsearch5_${scala.version}</artifactId>
-			<version>${flink.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.elasticsearch.client</groupId>
-					<artifactId>transport</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -226,25 +214,6 @@ under the License.
 
 		<pluginManagement>
 			<plugins>
-
-				<!-- If you want to use Java 8 Lambda Expressions uncomment the following lines -->
-				<!--
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
-						<compilerId>jdt</compilerId>
-					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>org.eclipse.tycho</groupId>
-							<artifactId>tycho-compiler-jdt</artifactId>
-							<version>0.21.0</version>
-						</dependency>
-					</dependencies>
-				</plugin>
-				-->
 
 				<!-- This improves the out-of-the-box experience in Eclipse by resolving some warnings. -->
 				<plugin>
