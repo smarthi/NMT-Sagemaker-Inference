@@ -8,10 +8,7 @@ It takes > 6 mins to create a Sagemaker endpoint, all Sagemaker model
  training is batch only, and also that Python is the primary language of Sagemaker - its best to use 
 Sagemaker for model inference when invoked from streaming pipelines like Kafka Streams and Flink.
 For streaming model training - consider looking at --> Oryx2, PredictionIO
-or Flink's Queryable State.
-
-Even better and more recent options for Streaming Model Training would be to leverage something like 
-Pravega (http://pravega.io) or Flink's Stateful stream processing for realtime model updates.
+or Flink's State Streaming.
 
 ## Building the Project
 
