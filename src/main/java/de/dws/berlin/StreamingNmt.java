@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import software.amazon.codeguruprofilerjavaagent.Profiler;
 import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint;
 import com.twitter.hbc.core.endpoint.StreamingEndpoint;
 
@@ -46,6 +47,7 @@ import org.slf4j.LoggerFactory;
 
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.tokenize.TokenizerModel;
+
 
 /**
  * Skeleton for a Flink Streaming Job.
@@ -77,7 +79,7 @@ public class StreamingNmt {
   public static void main(String[] args) throws Exception {
 
     initializeModels();
-    String outputPath = null;
+    String outputPath;
 
     ParameterTool parameterTool = ParameterTool.fromArgs(args);
 

@@ -69,7 +69,7 @@ public class SockeyeTranslateFunction extends RichAllWindowFunction<Tuple2<Strin
       String translatedJson = new String((amazonSageMakerRuntime.invokeEndpoint(invokeEndpointRequest).getBody()).array());
 
       if (translatedJson.length() > 0) {
-        System.out.println(sentence + "\n" + translatedJson + "\n");
+        System.out.println(sentence + "\n" + translatedJson.substring(translatedJson.indexOf(':') + 2, translatedJson.length()) + "\n");
         collector.collect(new Tuple2<>(sentence, translatedJson.substring(translatedJson.indexOf(':') + 2)));
       } else {
         collector.collect(new Tuple2<>(sentence, translatedJson));
