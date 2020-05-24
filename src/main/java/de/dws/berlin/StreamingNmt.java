@@ -48,6 +48,7 @@ import org.slf4j.LoggerFactory;
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.tokenize.TokenizerModel;
 
+import software.amazon.codeguruprofilerjavaagent.Profiler;
 
 /**
  * Skeleton for a Flink Streaming Job.
@@ -77,6 +78,11 @@ public class StreamingNmt {
   }
 
   public static void main(String[] args) throws Exception {
+
+      new Profiler.Builder()
+              .profilingGroupName("MyProfilingGroup")
+              .build()
+              .start();
 
     initializeModels();
     String outputPath;
